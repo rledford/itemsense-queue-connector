@@ -278,9 +278,9 @@ Commands are used when the `itemsense-connector` module is run as a `child_proce
 When a connector is in the same process, the event message will be the type defined in the [Events](#events) section. Example:
 
 ```js
-connector.on('itemQueueMessage', msg => {
-  typeof msg; // string
-  console.log(msg);
+connector.on('itemQueueMessage', message => {
+  typeof message; // string
+  console.log(message);
   /*
 
   {"epc":"2017011308040A01102001F2","tagId":"","jobId":"a7a2a244-1444-4900-86e0-a5d47a91a849","fromZone":"ABSENT","fromFloor":null,"toZone":"ZONE_NAME","toFloor":null,"fromFacility":null,"toFacility":"FACILITY","fromX":null,"fromY":null,"toX":null,"toY":null,"observationTime":"2018-09-11T12:58:00.077Z"}
@@ -294,12 +294,12 @@ connector.on('itemQueueMessage', msg => {
 When a connector sends an event from a child process, the message will be an Object that has an `event` property and a `data` property. The `message.event` is a `String` and the `message.data` will be the type defined in the [Events](#events) section, depending on the event. Example:
 
 ```js
-connector.on('message', msg => {
-  typeof msg; // object
-  switch (msg.event) {
+connector.on('message', message => {
+  typeof message; // object
+  switch (message.event) {
     case 'itemQueueMessage':
-      typeof msg.message; //string
-      console.log(msg.message);
+      typeof message.data; //string
+      console.log(message.data);
     /*
 
     {"epc":"2017011308040A01102001F2","tagId":"","jobId":"a7a2a244-1444-4900-86e0-a5d47a91a849","fromZone":"ABSENT","fromFloor":null,"toZone":"ZONE_NAME","toFloor":null,"fromFacility":null,"toFacility":"FACILITY","fromX":null,"fromY":null,"toX":null,"toY":null,"observationTime":"2018-09-11T12:58:00.077Z"}
