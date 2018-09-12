@@ -150,7 +150,7 @@ connector.send({ command: 'shutdown' });
 | username                    | String  |                    | username of a user with a role of DataReader or Admin                                        |
 | password                    | String  |                    | the password for the username                                                                |
 | connectionRetryInterval     | Number  | 5000               | the time, in **milliseconds**, between connection attempts if a network error occurs         |
-| connectionHeartbeatInterval | Number  | 5000               | the time, in **milliseconds**, that the AMQP connection will be checked                      |
+| connectionHeartbeatInterval | Number  | 30000              | the time, in **milliseconds**, that the AMQP connection will be checked                      |
 | queue                       | String  |                    | a queue name to connect to, if not present, a new queue will be created                      |
 | queueFilter                 | Object  | {}                 | used to configure a new queue                                                                |
 | ignoreAbsent                | Boolean | false              | if true, messages where toZone === 'ABSENT' will not be sent to listeners                    |
@@ -181,6 +181,8 @@ When a connector's AMQP connection fails or gets interrupted, the connector will
 | Milliseconds | 1000 | --- |
 
 This is the rate that the AMQP connection is checked for connectivity. When two consecutive heartbeat checks fail, the connection is considered to be lost, at which point an `ampqConnectionError` event is sent to all listeners, and the connector will try to reconnect to the server.
+
+IMPORTANT: If the connection between your app and the server is unreliable, the `connectionHeartbeatInterval` may need to be higher than the default **30000** milliseconds. This will allow more time for the AMQP connection to recover, and your connector will be able to receive any queue messages that were pushed onto the queue while the network connection was temporarily unavailable. Also, the `connectionHeartbeatInterval` should be, at most, 1/3 of the average time it takes for your ItemSense server to restart - see the [ItemSense Queue Issue](#itemsense-queue-issue) section for more details.
 
 ---
 
