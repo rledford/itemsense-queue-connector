@@ -55,6 +55,9 @@ const childProcessOptions = ItemSenseConnector.createOptions({
   username: USERNAME,
   password: PASSWORD,
   queue: '',
+  queueFilter: {
+    zoneTransitionsOnly: false
+  },
   ignoreAbsent: true
 });
 
