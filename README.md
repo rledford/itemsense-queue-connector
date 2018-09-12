@@ -23,9 +23,9 @@ This module can be used to create connectors that establish and maintain connect
 - [Commands and Methods](#commands-and-methods)
 - [Events](#events)
   - [Definitions](#event-definitions)
-  - [Structure of a Message from a Child Process Connector](#structure-of-a-message-from-a-child-process-connector)
-  - [Same Process Event Handling](#same-process-event-handling)
-  - [Child Process Event Handling](#child-process-event-handling)
+- [Same Process Event Handling](#same-process-event-handling)
+- [Child Process Event Handling](#child-process-event-handling)
+  - [Message Structure](#message-structure)
 - [ItemSense Queue Issue](#itemsense-queue-issue)
 - [To Do](#to-do)
 
@@ -243,7 +243,7 @@ The `maxObservationTimeDelta` option, when set to a value greater than 0, is use
 
 ### Commands
 
-Commands are used when the `itemsense-connector` module is run as a `child_process` only.
+Commands are used when a connector is run as a `child_process` only.
 
 | Command  | Args            | Description                                               |
 | -------- | --------------- | --------------------------------------------------------- |
@@ -275,18 +275,9 @@ IMPORTANT: `start` should only be called when the connector has not been started
 | amqpConnectionClosed  | String        | AMQP connection closed                                |
 | amqpChannelError      | \*            | The AMQP channel error message                        |
 
-### Structure of a Message from a Child Process Connector
+## Same Process Event Handling
 
-```js
-{
-  event: "some-event", // will be one of the above events (i.e itemQueueMessage)
-  data: "some-event-data" // may not always be a String - it depends on the Event
-}
-```
-
-### Same Process Event Handling
-
-When a connector is in the same process, the event message will be the type defined in the [Events](#events) section. Example:
+When a connector is in the same process, the event message will be the type defined in the [Events](#events) section.
 
 ```js
 connector.on('itemQueueMessage', message => {
@@ -300,9 +291,18 @@ connector.on('itemQueueMessage', message => {
 });
 ```
 
-### Child Process Event Handling
+## Child Process Event Handling
 
-When a connector sends an event from a child process, the message will be an Object that has an `event` property and a `data` property. The `message.event` is a `String` and the `message.data` will be the type defined in the [Events](#events) section, depending on the event. Example:
+### Message Structure
+
+```json
+{
+  "event": "some-event", // will be one of the above events (i.e itemQueueMessage)
+  "data": "some-event-data" // may not always be a String - it depends on the Event
+}
+```
+
+When a connector sends an event from a child process, the message will be an Object that has an `event` property and a `data` property. The `message.event` is a `String` and the `message.data` will be the type defined in the [Events](#events) section, depending on the event.
 
 ```js
 connector.on('message', message => {
@@ -322,7 +322,7 @@ connector.on('message', message => {
 
 ## ItemSense Queue Issue
 
-ItemSense, up to the latest release at this time ( 2018r2 ), has an issue where the queues persist when the ItemSense server reboots, but if you connect to a queue that was created prior to the reboot you will not receive any messages. Impinj is aware of the issue, so it should be fixed in a future release.
+Up to the latest ItemSense release at this time, 2018r2, there is an issue where the queues persist when the ItemSense server reboots, but if you connect to a queue that was created prior to the reboot you will not receive any messages. Impinj is aware of the issue, so it should be fixed in a future release.
 
 In order for this module to provide a reliable solution for connecting to ItemSense queues, the connectors will create a new queue anytime an AMQP error occurs. Unfortunately, this means that the if there is a network interruption between the connector and the ItemSense server, but ItemSense is still generating queue messages, you will not reconnect to the same queue. This means queue messages could be missed when there are network interruptions. Since there is no way for a connector to tell when it connects to a 'dead' queue, it's safer to connect to a new queue.
 
@@ -330,6 +330,4 @@ If you have other means of determining whether your ItemSense server was reboote
 
 ## To Do
 
-- Check for existing connections, when start() is called, and handle appropriately
-- Store the setTimeout() handle in the \_retryConnect() and clear it when start() is called to prevent possible simultaneous connection attempts
 - Add support for connecting to ItemSense health message queues
