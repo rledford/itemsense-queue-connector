@@ -37,22 +37,6 @@ npm i itemsense-queue-connector
 
 ---
 
-## Test
-
-Set the `HOST`, `USERNAME`, `PASSWORD`, and `QUEUE` (optional) environmental variables.
-
-Run `npm test`
-
-Mac/Linux Example
-
-```
-HOST=192.168.1.64 USERNAME=admin PASSWORD=this-is-not-the-admin-password QUEUE=this-is-not-an-existing-queue npm test
-```
-
-The test creates two connectors - one in the same process as the test process and one as separate child process. The connector in the same process will connect to the provided QUEUE env variable, if it exists, and the child process will connect to a new queue and will ignore ABSENT messages. After 5 minutes, both of the connectors will be shut down, then the process will exit.
-
----
-
 ## Usage
 
 ### Create a Connector in the Same Process
