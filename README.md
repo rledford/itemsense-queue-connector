@@ -308,3 +308,4 @@ If you have other means of determining whether your ItemSense server was reboote
 
 - Check for existing connections, when start() is called, and handle appropriately
 - Store the setTimeout() handle in the \_retryConnect() and clear it when start() is called to prevent possible simultaneous connection attempts
+- Add support for connecting to ItemSense health message queues
