@@ -297,8 +297,8 @@ connector.on('itemQueueMessage', message => {
 
 ```json
 {
-  "event": "some-event", // will be one of the above events (i.e itemQueueMessage)
-  "data": "some-event-data" // may not always be a String - it depends on the Event
+  "event": "some-event",
+  "data": "some-event-data"
 }
 ```
 
