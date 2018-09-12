@@ -1,8 +1,8 @@
 ## itemsense-queue-connector
 
-Targets Node.js 6 or later.
+Creates and manages connections to ItemSense queues. This module can be used to create connectors in your app's main process, or it can be run as a child process.
 
-This module can be used to create connectors that establish and maintain connections to ItemSense message queues. Even when connections to the ItemSense server are interrupted due to network outages or server reboots, the connectors will reestablish their connections to their queues, or create new ones if necessary. Connectors can be used in the same process as your app or they can be run as child processes.
+Targets Node.js 6 or later.
 
 ---
 
