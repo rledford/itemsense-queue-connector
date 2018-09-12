@@ -1,0 +1,34 @@
+{
+  "name": "itemsense-queue-connector",
+  "version": "1.0.0",
+  "description": "This module can be used to create connectors that establish and maintain connections to ItemSense message queues. Even when connections to the ItemSense server are interrupted due to network outages or server reboots, the connectors will reestablish their connections to their queues, or create new ones if necessary. Connectors can be used in the same process as your app or they can be run as child processes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rledford/itemsense-queue-connector.git"
+  },
+  "keywords": [
+    "impinj",
+    "itemsense",
+    "queue",
+    "message",
+    "amqp",
+    "event",
+    "connector",
+    "connection"
+  ],
+  "author": "rledford",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rledford/itemsense-queue-connector/issues"
+  },
+  "homepage": "https://github.com/rledford/itemsense-queue-connector#readme",
+  "dependencies": {
+    "amqplib": "^0.5.2",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  }
+}
