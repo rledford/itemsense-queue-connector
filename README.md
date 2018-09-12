@@ -26,7 +26,7 @@ This module can be used to create connectors that establish and maintain connect
   - [Same Process Event Handling](#same-process-event-handling)
   - [Child Process Event Handling](#child-process-event-handling)
 - [ItemSense Queue Issue](#itemsense-queue-issue)
-- [To Do](#todo)
+- [To Do](#to-do)
 
 ---
 
