@@ -237,6 +237,8 @@ Commands are used when the `itemsense-connector` module is run as a `child_proce
 | start         | Object: options | Tells the connector to start with the given options       |
 | shutdown      | NONE            | Tells the connector to shutdown and close all connections |
 
+IMPORTANT: The `start` method/command should only be called if the connector has never been started, or after the `shutdown` method/command is executed;
+
 ## Events
 
 <a id="event-definitions"></a>
