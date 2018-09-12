@@ -188,16 +188,17 @@ The `queueFilter` option is sent to the ItemSense server when creating a new que
 IMPORTANT: If the connector options you're using have a `queueFilter` as well as a `queue`, and the queue exists, then `queueFilter` will not be used until the connector has to create a new queue.
 
 <cite>Excerpt from the [Impinj - ItemSense API Documentation](https://developer.impinj.com/itemsense/docs/api/)</cite>
-| Property | Type | Description |
+
+| Property            | Type    | Description                                                                                                                       |
 | ------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| fromFacility | String | The name of a facility to monitor for tag exit events |
-| toFacility | String | The name of a facility to monitor for tag entry events |
-| fromZone | String | The name of the zone to monitor for tag exit events |
-| toZone | String | The name of the zone to monitor for tag entry events |
-| epc | String | A hexadecimal string representing an EPC prefix of an item. Only the items with EPCs that start with this prefix will be returned |
-| jobId | String | The ID of the job to monitor for tag events |
-| distance | Number | The minimum distance a tag must move before a queue event (or message) is created |
-| zoneTransitionsOnly | Boolean | Flag to only create queue events for tags that have transitioned between zones. Default value is true. |
+| fromFacility        | String  | The name of a facility to monitor for tag exit events                                                                             |
+| toFacility          | String  | The name of a facility to monitor for tag entry events                                                                            |
+| fromZone            | String  | The name of the zone to monitor for tag exit events                                                                               |
+| toZone              | String  | The name of the zone to monitor for tag entry events                                                                              |
+| epc                 | String  | A hexadecimal string representing an EPC prefix of an item. Only the items with EPCs that start with this prefix will be returned |
+| jobId               | String  | The ID of the job to monitor for tag events                                                                                       |
+| distance            | Number  | The minimum distance a tag must move before a queue event (or message) is created                                                 |
+| zoneTransitionsOnly | Boolean | Flag to only create queue events for tags that have transitioned between zones. Default value is true.                            |
 
 ---
 
