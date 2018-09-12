@@ -9,6 +9,7 @@ This module can be used to create connectors that establish and maintain connect
 ## Table of Contents
 
 - [Install](#install)
+- [Test](#test)
 - [Usage](#usage)
 - [Options](#options)
   - [Definitions](#option-definitions)
@@ -35,6 +36,26 @@ This module can be used to create connectors that establish and maintain connect
 ```
 npm i itemsense-queue-connector
 ```
+
+---
+
+## Test
+
+From your project directory...
+
+```
+cd ./node_modules/itemsense-queue-connector
+```
+
+Set the environmental variables `HOST`, `USERNAME`, `PASSWORD`, and `QUEUE` (QUEUE is **optional**). Then run the `npm test`.
+
+### Linux/MacOS Example
+
+```
+HOST=192.168.1.64 USERNAME=username PASSWORD=password npm test
+```
+
+The test will run for 5 minutes before shutting itself down. The options being used for each of the connectors are slightly different, and will be output to the console for you to see (or you can look at the `test.js` file).
 
 ---
 
