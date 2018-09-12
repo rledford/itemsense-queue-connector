@@ -26,6 +26,7 @@ This module can be used to create connectors that establish and maintain connect
   - [Same Process Event Handling](#same-process-event-handling)
   - [Child Process Event Handling](#child-process-event-handling)
 - [ItemSense Queue Issue](#itemsense-queue-issue)
+- [To Do](#todo)
 
 ---
 
@@ -302,3 +303,8 @@ ItemSense, up to the latest release at this time ( 2018r2 ), has an issue where 
 In order for this module to provide a reliable solution for connecting to ItemSense queues, the connectors will create a new queue anytime an AMQP error occurs. Unfortunately, this means that the if there is a network interruption between the connector and the ItemSense server, but ItemSense is still generating queue messages, you will not reconnect to the same queue. This means queue messages could be missed when there are network interruptions. Since there is no way for a connector to tell when it connects to a 'dead' queue, it's safer to connect to a new queue.
 
 If you have other means of determining whether your ItemSense server was rebooted or if the network connection was just interrupted, then you may want to listen for the `amqpConnectionError` event, `shutdown` your connector manually, and then `start` the connector up again with the same options that include the existing `queue`. Otherwise just let the connector recover itself.
+
+## To Do
+
+- Check for existing connections, when start() is called, and handle appropriately
+- Store the setTimeout() handle in the \_retryConnect() and clear it when start() is called to prevent possible simultaneous connection attempts
