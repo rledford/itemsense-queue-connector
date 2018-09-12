@@ -170,11 +170,11 @@ connector.send({ command: 'shutdown' });
 
 ### connectionRetryInterval
 
-| Units        | Min  | Max |
-| ------------ | ---- | --- |
-| Milliseconds | 1000 | --- |
+**Min:** 1000 ms  
+**Max:** None  
+**Default:** 5000 ms
 
-When a connector's AMQP connection fails or gets interrupted, the connector will try to reconnect to the server at this interval.
+If a connector's AMQP connection fails or is interrupted, the connector will try to reconnect to the server at this interval.
 
 ---
 
@@ -182,13 +182,13 @@ When a connector's AMQP connection fails or gets interrupted, the connector will
 
 ### connectionHeartbeatInterval
 
-| Units        | Min  | Max |
-| ------------ | ---- | --- |
-| Milliseconds | 1000 | --- |
+**Min:** 1000 ms  
+**Max:** None  
+**Default:** 30000 ms
 
 This is the rate that the AMQP connection is checked for connectivity. When two consecutive heartbeat checks fail, the connection is considered to be lost, at which point an `ampqConnectionError` event is sent to all listeners, and the connector will try to reconnect to the server.
 
-IMPORTANT: If the connection between your app and the server is unreliable, the `connectionHeartbeatInterval` may need to be higher than the default **30000** milliseconds. This will allow more time for the AMQP connection to recover, and your connector will be able to receive any queue messages that were pushed onto the queue while the network connection was temporarily unavailable. Also, the `connectionHeartbeatInterval` should be, at most, 1/3 of the average time it takes for your ItemSense server to restart - see the [ItemSense Queue Issue](#itemsense-queue-issue) section for more details.
+IMPORTANT: If the connection between your app and the ItemSense server is unreliable, the `connectionHeartbeatInterval` may need to be higher than the default **30000 ms**. This will allow more time for the AMQP connection to recover, and your connector will be able to receive any queue messages that were pushed onto the queue while the network connection was temporarily unavailable. Also, the `connectionHeartbeatInterval` should be, at most, 1/3 of the average time it takes for your ItemSense server to restart - see the [ItemSense Queue Issue](#itemsense-queue-issue) section for more details.
 
 ---
 
@@ -258,7 +258,7 @@ Commands are used when the `itemsense-connector` module is run as a `child_proce
 | start         | Object: options | Tells the connector to start with the given options       |
 | shutdown      | NONE            | Tells the connector to shutdown and close all connections |
 
-IMPORTANT: The `start` method/command should only be called if the connector has never been started, or after the `shutdown` method/command is executed;
+IMPORTANT: `start` should only be called when the connector has not been started, OR it has been `shutdown`.
 
 ## Events
 
