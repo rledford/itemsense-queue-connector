@@ -11,6 +11,9 @@ Targets Node.js 6 or later.
 - [Install](#install)
 - [Test](#test)
 - [Usage](#usage)
+- [Module Exports](#module-exports)
+- [Connector Methods](#connector-methods)
+- [Child Process Commands](#child-process-commands)
 - [Options](#options)
   - [Definitions](#option-definitions)
   - [Notes](#option-notes)
@@ -20,7 +23,6 @@ Targets Node.js 6 or later.
     - [queueFilter](#queue-filter-option-note)
     - [ignoreAbsent](#ignore-absent-option-note)
     - [maxObservationTimeDelta](#max-observation-time-delta-option-note)
-- [Commands and Methods](#commands-and-methods)
 - [Events](#events)
   - [Definitions](#event-definitions)
 - [Same Process Event Handling](#same-process-event-handling)
@@ -71,7 +73,7 @@ const iqc = require('itemsense-queue-connector');
 const connector = iqc.createConnector();
 
 // create options
-const options = iqc.createOptions({
+let options = iqc.createOptions({
   host: '127.0.0.1',
   username: 'username',
   password: 'password'
@@ -110,7 +112,7 @@ const iqc = require('itemsense-queue-connector');
 const connector = fork('./node_modules/itemsense-queue-connector');
 
 // create options
-const options = iqc.createOptions({
+let options = iqc.createOptions({
   host: '127.0.0.1',
   username: 'username',
   password: 'password'
@@ -138,6 +140,64 @@ connector.on('message', message => {
 // ...
 
 // shutdown the connector when finished, or when you need to change options
+connector.send({ command: 'shutdown' });
+```
+
+---
+
+## Module Exports
+
+| Name            | Type     | Args            | Description                                                       |
+| --------------- | -------- | --------------- | ----------------------------------------------------------------- |
+| event           | object   | n/a             | key:value pair of event names that a connector will emit          |
+| createOptions   | function | options: Object | Creates and returns options that can be used to start a connector |
+| createConnector | function | None            | Creates and returns a new connector instance                      |
+
+```js
+const iqc = require('itemsense-queue-connector');
+const connector = iqc.createConnector();
+
+let options = iqc.createOptions({ host: '192.168.1.64' }); // creates and merges options
+
+connector.start(options);
+```
+
+---
+
+## Connector Methods
+
+| Name     | Description                                 |
+| -------- | ------------------------------------------- |
+| start    | Starts the connector with the given options |
+| shutdown | Shutdown the connector                      |
+
+```js
+const iqc = require('itemsense-queue-connector');
+let options = iqc.createOptions(); // will create default options
+
+const connector = iqc.createConnector();
+
+connector.start(options);
+// ...
+connector.shutdown();
+```
+
+IMPORTANT: `start` should only be called when the connector has not been started, OR it has been `shutdown`.
+
+---
+
+## Child Process Commands
+
+Commands are used to control a connector that's running as a child process.
+
+| Command  | Description                                            |
+| -------- | ------------------------------------------------------ |
+| start    | Start the connector to start with the provided options |
+| shutdown | Shutdown the connector                                 |
+
+```js
+connector.send({ command: 'start', options: options });
+// ...
 connector.send({ command: 'shutdown' });
 ```
 
@@ -238,27 +298,6 @@ The `ignoreAbsent` option can be useful when your ItemSense jobs have tag expira
 The `maxObservationTimeDelta` option, when set to a value greater than 0, is used to 'silence' queue messages that have an observationTime delta that is older than this value. This can be helpful in some cases because ItemSense will continue to push messages onto the queue for up to an hour while no clients are connected to the queue. This means there could possibly be thousands of outdated messages that will flood your listeners. If your listeners are running in another process, the flood of incoming messages may not be a problem, otherwise it could slow your entire application down (depends on what your listeners are doing with the messages).
 
 ---
-
-## Commands and Methods
-
-### Commands
-
-Commands are used when a connector is run as a `child_process` only.
-
-| Command  | Args            | Description                                               |
-| -------- | --------------- | --------------------------------------------------------- |
-| start    | Object: options | Tells the connector to start with the given options       |
-| shutdown | NONE            | Tells the connector to shutdown and close all connections |
-
-### Methods
-
-| Name          | Args            | Description                                               |
-| ------------- | --------------- | --------------------------------------------------------- |
-| createOptions | Object: options | Creates options that can be used to start a connector     |
-| start         | Object: options | Tells the connector to start with the given options       |
-| shutdown      | NONE            | Tells the connector to shutdown and close all connections |
-
-IMPORTANT: `start` should only be called when the connector has not been started, OR it has been `shutdown`.
 
 ## Events
 
