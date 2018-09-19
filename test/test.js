@@ -18,7 +18,7 @@ if (!HOST || !USERNAME || !PASSWORD) {
 
 let sameProcessConnectorOptions = ItemSenseConnector.createOptions({
   id: 'Same Process',
-  host: HOST,
+  hostname: HOST,
   username: USERNAME,
   password: PASSWORD,
   queue: QUEUE,
@@ -51,10 +51,10 @@ sameProcessConnector.on(ItemSenseConnector.event.itemQueueMessage, message => {
 
 const childProcessOptions = ItemSenseConnector.createOptions({
   id: 'Child Process',
-  host: HOST,
+  hostname: HOST,
   username: USERNAME,
   password: PASSWORD,
-  queue: '',
+  queue: QUEUE,
   queueFilter: {
     zoneTransitionsOnly: false
   },
@@ -71,6 +71,18 @@ childProcessConnector.send({
   command: 'start',
   options: childProcessOptions
 });
+
+/*
+setTimeout(() => {
+  childProcessConnector.send({ command: 'shutdown' });
+  setTimeout(() => {
+    childProcessConnector.send({
+      command: 'start',
+      options: childProcessOptions
+    });
+  }, 5000);
+}, 5000);
+*/
 
 setTimeout(() => {
   childProcessConnector.send({ command: 'shutdown' });
