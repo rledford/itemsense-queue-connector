@@ -22,7 +22,8 @@ let sameProcessConnectorOptions = ItemSenseConnector.createOptions({
   username: USERNAME,
   password: PASSWORD,
   queue: QUEUE,
-  maxObservationTimeDelta: 30000
+  maxObservationTimeDelta: 30000,
+  connectionHeartbeatInterval: 5000
 });
 
 console.log(
@@ -36,16 +37,22 @@ sameProcessConnector.start(sameProcessConnectorOptions);
 sameProcessConnector.on(ItemSenseConnector.event.queueConnect, message => {
   console.log(message);
 });
-sameProcessConnector.on(
-  ItemSenseConnector.event.amqpConnectionClosed,
-  message => {
-    console.log('Same Process', message);
-  }
-);
-sameProcessConnector.on(ItemSenseConnector.event.queueConnected, message => {
+sameProcessConnector.on('queueConnected', message => {
   console.log('Same Process', message);
 });
-sameProcessConnector.on(ItemSenseConnector.event.itemQueueMessage, message => {
+sameProcessConnector.on('itemQueueMessage', message => {
+  console.log('Same Process', message);
+});
+sameProcessConnector.on('amqpConnectionClosed', message => {
+  console.log('Same Process', message);
+});
+sameProcessConnector.on('serverConnectionError', message => {
+  console.log('Same Process', message);
+});
+sameProcessConnector.on('amqpConnectionError', message => {
+  console.log('Same Process', message);
+});
+sameProcessConnector.on('amqpChannelError', message => {
   console.log('Same Process', message);
 });
 
@@ -71,18 +78,6 @@ childProcessConnector.send({
   command: 'start',
   options: childProcessOptions
 });
-
-/*
-setTimeout(() => {
-  childProcessConnector.send({ command: 'shutdown' });
-  setTimeout(() => {
-    childProcessConnector.send({
-      command: 'start',
-      options: childProcessOptions
-    });
-  }, 5000);
-}, 5000);
-*/
 
 setTimeout(() => {
   childProcessConnector.send({ command: 'shutdown' });
