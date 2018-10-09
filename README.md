@@ -305,8 +305,8 @@ The `maxObservationTimeDelta` option, when set to a value greater than 0, is use
 
 | Event                 | Msg Data Type | Description                                           |
 | --------------------- | ------------- | ----------------------------------------------------- |
-| itemQueueMessage      | String        | An item queue message from ItemSense                  |
-| healthQueueMessage    | String        | A health queue message from ItemSense                 |
+| itemQueueMessage      | JSON          | A parsed item queue message from ItemSense            |
+| healthQueueMessage    | JSON          | A parsed health queue message from ItemSense          |
 | queueConnected        | String        | The name of the queue the connector just connected to |
 | queueDisconnected     | String        | Disconnected from a queue                             |
 | serverConnectionError | \*            | The connection error message                          |
