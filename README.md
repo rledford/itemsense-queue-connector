@@ -86,8 +86,8 @@ connector.start(options);
 connector.on(iqc.event.itemQueueMessage, message => {
   console.log(`received queue message: ${message}`);
 });
-connector.on(iqc.event.amqpConnectionError, message => {
-  console.log(`received amqp connection error: ${message}`);
+connector.on('error', message => {
+  console.log(`received error: ${message}`);
 });
 // you can use the event names directly - see Events section
 connector.on('queueConnected', message => {
@@ -127,8 +127,8 @@ connector.on('message', message => {
     case iqc.event.itemQueueMessage:
       console.log(`received queue message: ${message.data}`);
       break;
-    case isq.event.amqpConnectionError:
-      console.log(`received amqp connection error: ${message.data}`);
+    case 'error':
+      console.log(`received error: ${message.data}`);
       break;
     // you can use the event names directly - see Events section
     case: 'queueConnected':
@@ -303,16 +303,14 @@ The `maxObservationTimeDelta` option, when set to a value greater than 0, is use
 
 <a id="event-definitions"></a>
 
-| Event                 | Msg Data Type | Description                                           |
-| --------------------- | ------------- | ----------------------------------------------------- |
-| itemQueueMessage      | JSON          | A parsed item queue message from ItemSense            |
-| healthQueueMessage    | JSON          | A parsed health queue message from ItemSense          |
-| queueConnected        | String        | The name of the queue the connector just connected to |
-| queueDisconnected     | String        | Disconnected from a queue                             |
-| serverConnectionError | \*            | The connection error message                          |
-| amqpConnectionError   | \*            | The AMQP connection error message                     |
-| amqpConnectionClosed  | String        | AMQP connection closed                                |
-| amqpChannelError      | \*            | The AMQP channel error message                        |
+| Event                | Msg Data Type | Description                                           |
+| -------------------- | ------------- | ----------------------------------------------------- |
+| itemQueueMessage     | JSON          | A parsed item queue message from ItemSense            |
+| healthQueueMessage   | JSON          | A parsed health queue message from ItemSense          |
+| queueConnected       | String        | The name of the queue the connector just connected to |
+| queueDisconnected    | String        | Disconnected from a queue                             |
+| amqpConnectionClosed | String        | AMQP connection closed                                |
+| error                | Error         | Error object                                          |
 
 ## Same Process Event Handling
 
