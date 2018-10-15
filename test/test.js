@@ -46,13 +46,7 @@ sameProcessConnector.on('itemQueueMessage', message => {
 sameProcessConnector.on('amqpConnectionClosed', message => {
   console.log('Same Process', message);
 });
-sameProcessConnector.on('serverConnectionError', message => {
-  console.log('Same Process', message);
-});
-sameProcessConnector.on('amqpConnectionError', message => {
-  console.log('Same Process', message);
-});
-sameProcessConnector.on('amqpChannelError', message => {
+sameProcessConnector.on('error', message => {
   console.log('Same Process', message);
 });
 
