@@ -37,17 +37,23 @@ sameProcessConnector.start(sameProcessConnectorOptions);
 sameProcessConnector.on(ItemSenseConnector.event.queueConnect, message => {
   console.log(message);
 });
-sameProcessConnector.on('queueConnected', message => {
-  console.log('Same Process', message);
+sameProcessConnector.on('itemQueueConnected', message => {
+  console.log('Same process connected to item queue', message);
+});
+sameProcessConnector.on('healthQueueConnected', message => {
+  console.log('Same process connected to health queue', message);
 });
 sameProcessConnector.on('itemQueueMessage', message => {
-  console.log('Same Process', message);
+  console.log('Same process item queue message', message);
+});
+sameProcessConnector.on('healthQueueMessage', message => {
+  console.log('Same process health message:', message);
 });
 sameProcessConnector.on('amqpConnectionClosed', message => {
-  console.log('Same Process', message);
+  console.log('Same process AMQP connection closed');
 });
 sameProcessConnector.on('error', message => {
-  console.log('Same Process', message);
+  console.log('Same process error:', message);
 });
 
 const childProcessOptions = ItemSenseConnector.createOptions({
@@ -56,7 +62,7 @@ const childProcessOptions = ItemSenseConnector.createOptions({
   username: USERNAME,
   password: PASSWORD,
   queue: QUEUE,
-  queueFilter: {
+  itemQueueFilter: {
     zoneTransitionsOnly: false
   },
   ignoreAbsent: true
