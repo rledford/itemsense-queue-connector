@@ -37,11 +37,8 @@ sameProcessConnector.start(sameProcessConnectorOptions);
 sameProcessConnector.on(ItemSenseConnector.event.queueConnect, message => {
   console.log(message);
 });
-sameProcessConnector.on('itemQueueConnected', message => {
-  console.log('Same process connected to item queue', message);
-});
-sameProcessConnector.on('healthQueueConnected', message => {
-  console.log('Same process connected to health queue', message);
+sameProcessConnector.on('info', message => {
+  console.log('Same process info:', message);
 });
 sameProcessConnector.on('itemQueueMessage', message => {
   console.log('Same process item queue message', message);
