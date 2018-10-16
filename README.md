@@ -19,8 +19,8 @@ Targets Node.js 6 or later.
   - [Notes](#option-notes)
     - [connectionRetryInterval](#connection-retry-interval-note)
     - [connectionHeartbeatInterval](#connection-heartbeat-interval-note)
-    - [queue](#queue-option-note)
-    - [queueFilter](#queue-filter-option-note)
+    - [queue](#item-queue-name-option-note)
+    - [itemQueueFilter](#item-queue-filter-option-note)
     - [ignoreAbsent](#ignore-absent-option-note)
     - [maxObservationTimeDelta](#max-observation-time-delta-option-note)
 - [Events](#events)
@@ -90,7 +90,7 @@ connector.on('error', message => {
   console.log(`received error: ${message}`);
 });
 // you can use the event names directly - see Events section
-connector.on('queueConnected', message => {
+connector.on('itemQueueConnected', message => {
   console.log(`connected to queue ${message}`);
 });
 
@@ -131,7 +131,7 @@ connector.on('message', message => {
       console.log(`received error: ${message.data}`);
       break;
     // you can use the event names directly - see Events section
-    case: 'queueConnected':
+    case: 'itemQueueConnected':
       console.log(`connected to queue ${message}`);
       break;
   }
@@ -149,9 +149,9 @@ connector.send({ command: 'shutdown' });
 
 | Name            | Type     | Args            | Description                                                       |
 | --------------- | -------- | --------------- | ----------------------------------------------------------------- |
-| event           | object   | n/a             | key:value pair of event names that a connector will emit          |
-| createOptions   | function | options: Object | Creates and returns options that can be used to start a connector |
-| createConnector | function | None            | Creates and returns a new connector instance                      |
+| event           | Object   | n/a             | key:value pair of event names that a connector will emit          |
+| createOptions   | Function | options: Object | Creates and returns options that can be used to start a connector |
+| createConnector | Function | None            | Creates and returns a new connector instance                      |
 
 ```js
 const iqc = require('itemsense-queue-connector');
@@ -217,10 +217,10 @@ connector.send({ command: 'shutdown' });
 | password                    | String  |                    | the password for the username                                                                |
 | connectionRetryInterval     | Number  | 5000               | the time, in **milliseconds**, between connection attempts if a network error occurs         |
 | connectionHeartbeatInterval | Number  | 30000              | the time, in **milliseconds**, that the AMQP connection will be checked                      |
-| queue                       | String  |                    | a queue name to connect to, if not present, a new queue will be created                      |
-| queueFilter                 | Object  | {}                 | used to configure a new queue                                                                |
+| itemQueueName               | String  |                    | a queue name to connect to, if it does not exist on the server, a new queue will be created  |
+| itemQueueFilter             | Object  | {}                 | used to configure a new queue for items                                                      |
 | ignoreAbsent                | Boolean | false              | if true, messages where toZone === 'ABSENT' will not be sent to listeners                    |
-| maxObservationTimeDelta     | Number  | -1                 | the maximum delta, in **milliseconds**, that an observationTime can be from the current time |
+| maxObservationTimeDelta     | Number  | 0                  | the maximum delta, in **milliseconds**, that an observationTime can be from the current time |
 
 <a id='option-notes'></a>
 
@@ -252,21 +252,21 @@ IMPORTANT: If the connection between your app and the ItemSense server is unreli
 
 ---
 
-<a id='queue-option-note'></a>
+<a id='item-queue-name-option-note'></a>
 
-### queue
+### itemQueueName
 
-Depending on how the connector is being used, when starting the connector, it may be beneficial to provide an existing queue. Any messages that are waiting to be consumed in the queue will be consumed by the connector and events will be sent to listeners unless the observationTime delta exceeds `maxObservationTimeDelta`.
+Depending on how the connector is being used, when starting the connector, it may be beneficial to provide an existing queue name. Any messages that are waiting to be consumed in the queue will be consumed by the connector and events will be sent to listeners unless the observationTime delta exceeds `maxObservationTimeDelta`.
 
 ---
 
-<a id='queue-filter-option-note'></a>
+<a id='item-queue-filter-option-note'></a>
 
-### queueFilter
+### itemQueueFilter
 
-The `queueFilter` option is sent to the ItemSense server when creating a new queue. The filter can contain any of the following properties.
+The `itemQueueFilter` option is sent to the ItemSense server when creating a new queue. The filter can contain any of the following properties.
 
-IMPORTANT: If the connector options you're using have a `queueFilter` as well as a `queue`, and the queue exists, then `queueFilter` will not be used until the connector has to create a new queue.
+IMPORTANT: If the connector options you're using have `itemQueueFilter` as well as a `itemQueueName` defined, and the queue exists, then `itemQueueFilter` will not be used until the connector has to create a new queue.
 
 <cite>Excerpt from the [Impinj - ItemSense API Documentation](https://developer.impinj.com/itemsense/docs/api/)</cite>
 
@@ -307,7 +307,7 @@ The `maxObservationTimeDelta` option, when set to a value greater than 0, is use
 | -------------------- | ------------- | ----------------------------------------------------- |
 | itemQueueMessage     | JSON          | A parsed item queue message from ItemSense            |
 | healthQueueMessage   | JSON          | A parsed health queue message from ItemSense          |
-| queueConnected       | String        | The name of the queue the connector just connected to |
+| itemQueueConnected   | String        | The name of the queue the connector just connected to |
 | queueDisconnected    | String        | Disconnected from a queue                             |
 | amqpConnectionClosed | String        | AMQP connection closed                                |
 | error                | Error         | Error object                                          |
