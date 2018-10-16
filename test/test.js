@@ -46,6 +46,12 @@ sameProcessConnector.on('itemQueueMessage', message => {
 sameProcessConnector.on('healthQueueMessage', message => {
   console.log('Same process health message:', message);
 });
+sameProcessConnector.on('itemQueueConnected', queue => {
+  console.log(`Same process connected to item queue [ ${queue} ]`);
+});
+sameProcessConnector.on('healthQueueConnected', queue => {
+  console.log(`Same process connected to health queue [ ${queue} ]`);
+});
 sameProcessConnector.on('amqpConnectionClosed', message => {
   console.log('Same process AMQP connection closed');
 });
