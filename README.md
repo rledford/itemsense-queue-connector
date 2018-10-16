@@ -74,7 +74,7 @@ const connector = iqc.createConnector();
 
 // create options
 let options = iqc.createOptions({
-  host: '127.0.0.1',
+  hostname: '127.0.0.1',
   username: 'username',
   password: 'password'
 });
@@ -113,7 +113,7 @@ const connector = fork('./node_modules/itemsense-queue-connector');
 
 // create options
 let options = iqc.createOptions({
-  host: '127.0.0.1',
+  hostname: '127.0.0.1',
   username: 'username',
   password: 'password'
 });
@@ -157,7 +157,7 @@ connector.send({ command: 'shutdown' });
 const iqc = require('itemsense-queue-connector');
 const connector = iqc.createConnector();
 
-let options = iqc.createOptions({ host: '192.168.1.64' }); // creates and merges options
+let options = iqc.createOptions({ hostname: '192.168.1.64' }); // creates and merges options
 
 connector.start(options);
 ```
@@ -210,7 +210,7 @@ connector.send({ command: 'shutdown' });
 | Option                      | Type    | Default            | Description                                                                                  |
 | --------------------------- | ------- | ------------------ | -------------------------------------------------------------------------------------------- |
 | id                          | String  | ItemSenseConnector | the id of the connector instance - useful when multiple connectors exist                     |
-| host                        | String  | 127.0.0.1          | the IP address or hostname of the ItemSense server                                           |
+| hostname                    | String  | 127.0.0.1          | the IP address or hostname of the ItemSense server                                           |
 | port                        | Number  | 80                 | the port the ItemSense API is available on - used to configure queues                        |
 | ssl                         | Boolean | false              | whether the ItemSense server uses SSL/TLS or not                                             |
 | username                    | String  |                    | username of a user with a role of DataReader or Admin                                        |
