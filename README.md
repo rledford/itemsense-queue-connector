@@ -84,14 +84,23 @@ connector.start(options);
 
 // listen for messages
 connector.on(iqc.event.itemQueueMessage, message => {
-  console.log(`received queue message: ${message}`);
+  console.log(`received item queue message: ${message}`);
+});
+connector.on(iqc.event.healthQueueMessage, message => {
+  console.log(`received health queue message: ${message}`);
+});
+connector.on(iqc.event.itemQueueConnected, queue => {
+  console.log(`connected to item queue [ ${queue} ]`);
+});
+connector.on(iqc.event.healthQueueConnected, queue => {
+  console.log(`connected to health queue [ ${queue} ]`);
 });
 connector.on('error', message => {
   console.log(`received error: ${message}`);
 });
 // you can use the event names directly - see Events section
-connector.on('itemQueueConnected', message => {
-  console.log(`connected to queue ${message}`);
+connector.on('info', message => {
+  console.log(`received info: ${message}`);
 });
 
 // ...
@@ -125,14 +134,23 @@ connector.send({ command: 'start', options });
 connector.on('message', message => {
   switch (message.event) {
     case iqc.event.itemQueueMessage:
-      console.log(`received queue message: ${message.data}`);
+      console.log(`received item queue message: ${message.data}`);
+      break;
+    case iqc.event.healthQueueMessage:
+      console.log(`received health queue message: ${message.data}`);
+      break;
+    case iqc.event.itemQueueConnected:
+      console.log(`connected to item queue [ ${message.data} ]`);
+      break;
+    case iqc.event.healthQueueConnected:
+      console.log(`connected to health queue [ ${message.data} ]`);
       break;
     case 'error':
       console.log(`received error: ${message.data}`);
       break;
     // you can use the event names directly - see Events section
-    case: 'itemQueueConnected':
-      console.log(`connected to queue ${message}`);
+    case: 'info':
+      console.log(`received info: ${message.data}`);
       break;
   }
 });
@@ -303,14 +321,15 @@ The `maxObservationTimeDelta` option, when set to a value greater than 0, is use
 
 <a id="event-definitions"></a>
 
-| Event                | Msg Data Type | Description                                           |
-| -------------------- | ------------- | ----------------------------------------------------- |
-| itemQueueMessage     | JSON          | A parsed item queue message from ItemSense            |
-| healthQueueMessage   | JSON          | A parsed health queue message from ItemSense          |
-| itemQueueConnected   | String        | The name of the queue the connector just connected to |
-| queueDisconnected    | String        | Disconnected from a queue                             |
-| amqpConnectionClosed | String        | AMQP connection closed                                |
-| error                | Error         | Error object                                          |
+| Event                | Msg Data Type | Description                                                        |
+| -------------------- | ------------- | ------------------------------------------------------------------ |
+| info                 | String        | Helpful information that may want to be logged or stored elsewhere |
+| itemQueueMessage     | JSON          | A parsed item queue message from ItemSense                         |
+| itemQueueConnected   | String        | The name of the queue the connector just connected to              |
+| healthQueueMessage   | JSON          | A parsed health queue message from ItemSense                       |
+| healthQueueConnected | String        | The name of the queue the connector just connected to              |
+| amqpConnectionClosed | String        | AMQP connection closed                                             |
+| error                | Error         | Error object                                                       |
 
 ## Same Process Event Handling
 
@@ -318,7 +337,7 @@ When a connector is in the same process, the event message will be the type defi
 
 ```js
 connector.on('itemQueueMessage', message => {
-  typeof message; // string
+  typeof message; // object
   console.log(message);
   /*
 
@@ -346,7 +365,7 @@ connector.on('message', message => {
   typeof message; // object
   switch (message.event) {
     case 'itemQueueMessage':
-      typeof message.data; //string
+      typeof message.data; // object
       console.log(message.data);
     /*
 
@@ -367,4 +386,4 @@ If you have other means of determining whether your ItemSense server was reboote
 
 ## To Do
 
-- Add support for connecting to ItemSense health message queues
+- All caught up.
