@@ -6,10 +6,10 @@ let ItemSenseConnector = require('../lib/itemsense-queue-connector');
 let childProcessConnector = childProcess.fork('./');
 
 const HOSTNAME = process.env.HOSTNAME;
+const PORT = parseInt(process.env.PORT) || 80;
 const USERNAME = process.env.USERNAME;
 const PASSWORD = process.env.PASSWORD;
 const QUEUE = process.env.QUEUE || '';
-const TLS_ENABLED = process.env.TLS_ENABLED === 'true' ? true : false;
 
 if (!HOSTNAME || !USERNAME || !PASSWORD) {
   throw new Error(
@@ -20,6 +20,7 @@ if (!HOSTNAME || !USERNAME || !PASSWORD) {
 let sameProcessConnectorOptions = ItemSenseConnector.createOptions({
   id: 'Same Process',
   hostname: HOSTNAME,
+  port: PORT,
   username: USERNAME,
   password: PASSWORD,
   queue: QUEUE,
