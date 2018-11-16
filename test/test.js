@@ -5,20 +5,21 @@ const childProcess = require('child_process');
 let ItemSenseConnector = require('../lib/itemsense-queue-connector');
 let childProcessConnector = childProcess.fork('./');
 
-const HOST = process.env.HOST;
+const HOSTNAME = process.env.HOSTNAME;
 const USERNAME = process.env.USERNAME;
 const PASSWORD = process.env.PASSWORD;
 const QUEUE = process.env.QUEUE || '';
+const TLS_ENABLED = process.env.TLS_ENABLED === 'true' ? true : false;
 
-if (!HOST || !USERNAME || !PASSWORD) {
+if (!HOSTNAME || !USERNAME || !PASSWORD) {
   throw new Error(
-    'You will need to set the HOST, USERNAME, PASSWORD, and (optional) QUEUE environment variables before running this test'
+    'You will need to set the HOSTNAME, USERNAME, PASSWORD, and (optional) QUEUE environment variables before running this test'
   );
 }
 
 let sameProcessConnectorOptions = ItemSenseConnector.createOptions({
   id: 'Same Process',
-  hostname: HOST,
+  hostname: HOSTNAME,
   username: USERNAME,
   password: PASSWORD,
   queue: QUEUE,
@@ -61,7 +62,7 @@ sameProcessConnector.on('error', message => {
 
 const childProcessOptions = ItemSenseConnector.createOptions({
   id: 'Child Process',
-  hostname: HOST,
+  hostname: HOSTNAME,
   username: USERNAME,
   password: PASSWORD,
   queue: QUEUE,
