@@ -2,7 +2,7 @@
 
 Creates and manages connections to ItemSense queues. This module can be used to create connectors in your app's main process, or it can be run as a child process.
 
-Targets Node.js 6 or later.
+Targets ES6+.
 
 ---
 

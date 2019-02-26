@@ -21,7 +21,7 @@
     "connection"
   ],
   "author": "rledford",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rledford/itemsense-queue-connector/issues"
   },
