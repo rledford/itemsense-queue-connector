@@ -1,6 +1,6 @@
 {
   "name": "itemsense-queue-connector",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "Creates and manages connections to ItemSense queues. This module can be used to create connectors in your app's main process, or it can be run as a child process.",
   "main": "index.js",
   "scripts": {
