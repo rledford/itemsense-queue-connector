@@ -51,6 +51,9 @@ sameProcessConnector.on('healthQueueMessage', message => {
 sameProcessConnector.on('itemQueueConnected', queue => {
   console.log(`Same process connected to item queue [ ${queue} ]`);
 });
+sameProcessConnector.on('thresholdQueueConnected', queue => {
+  console.log(`Same process connected to threshold queueu [ ${queue} ]`);
+});
 sameProcessConnector.on('healthQueueConnected', queue => {
   console.log(`Same process connected to health queue [ ${queue} ]`);
 });
@@ -63,6 +66,7 @@ sameProcessConnector.on('error', message => {
 
 const childProcessOptions = ItemSenseConnector.createOptions({
   id: 'Child Process',
+  name: 'Child Process',
   hostname: HOSTNAME,
   username: USERNAME,
   password: PASSWORD,
