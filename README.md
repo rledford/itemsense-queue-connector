@@ -1,6 +1,6 @@
 ## itemsense-queue-connector
 
-Creates and manages connections to ItemSense queues. This module can be used to create connectors in your app's main process, or it can be run as a child process.
+Creates and manages connections to ItemSense health, item, and threshold queues. This module can be used to create connectors in your app's main process, or it can be run as a child process.
 
 Targets ES6+.
 
@@ -89,8 +89,14 @@ connector.on(iqc.event.itemQueueMessage, message => {
 connector.on(iqc.event.healthQueueMessage, message => {
   console.log(`received health queue message: ${message}`);
 });
+connector.on(iqc.event.thresholdQueueMessage, message => {
+  console.log(`received threshold queue message: ${message}`);
+});
 connector.on(iqc.event.itemQueueConnected, queue => {
   console.log(`connected to item queue [ ${queue} ]`);
+});
+connector.on(iqc.event.thresholdQueueConnected, queue => {
+  console.log(`connected to threshold queue [ ${queue} ]`);
 });
 connector.on(iqc.event.healthQueueConnected, queue => {
   console.log(`connected to health queue [ ${queue} ]`);
@@ -136,11 +142,17 @@ connector.on('message', message => {
     case iqc.event.itemQueueMessage:
       console.log(`received item queue message: ${message.data}`);
       break;
+    case iqc.event.thresholdQueueMessage:
+      console.log(`received threshold queue message: ${message.data}`)
+      break;
     case iqc.event.healthQueueMessage:
       console.log(`received health queue message: ${message.data}`);
       break;
     case iqc.event.itemQueueConnected:
       console.log(`connected to item queue [ ${message.data} ]`);
+      break;
+    case iqc.event.thresholdQueueConnected:
+      console.log(`connected to threshold queue [ ${message.data} ]`);
       break;
     case iqc.event.healthQueueConnected:
       console.log(`connected to health queue [ ${message.data} ]`);
@@ -236,6 +248,7 @@ connector.send({ command: 'shutdown' });
 | connectionHeartbeatInterval | Number  | 30000              | the time, in **milliseconds**, that the AMQP connection will be checked                      |
 | itemQueueName               | String  |                    | a queue name to connect to, if it does not exist on the server, a new queue will be created  |
 | itemQueueFilter             | Object  | {}                 | used to configure a new queue for items                                                      |
+| thresholdQueueName          | String  |                    | a queue name to connect to, if it does not exist on the server, a new queue will be created  |
 | ignoreAbsent                | Boolean | false              | if true, messages where toZone === 'ABSENT' will not be sent to listeners                    |
 | maxObservationTimeDelta     | Number  | 0                  | the maximum delta, in **milliseconds**, that an observationTime can be from the current time |
 
@@ -249,7 +262,7 @@ connector.send({ command: 'shutdown' });
 
 **Min:** 1000 ms  
 **Max:** None  
-**Default:** 5000 ms
+**Default:** 30000 ms
 
 If a connector's AMQP connection fails or is interrupted, the connector will try to reconnect to the server at this interval.
 
